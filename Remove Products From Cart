@@ -1,0 +1,53 @@
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class RemoveFromCartTest {
+    public static void main(String[] args) {
+        // Set the path to your ChromeDriver executable
+        System.setProperty("webdriver.chrome.driver", "path_to_chromedriver.exe");
+
+        // Instantiate ChromeDriver
+        WebDriver driver = new ChromeDriver();
+
+        // Navigate to the website
+        driver.get("https://automationexercise.com/");
+
+        // Add one or more products to the cart
+        WebElement addToCartButton1 = driver.findElement(By.xpath("//button[contains(text(), 'Add to Cart')]"));
+        addToCartButton1.click();
+
+        WebElement addToCartButton2 = driver.findElement(By.xpath("//button[contains(text(), 'Add to Cart')]"));
+        addToCartButton2.click();
+
+        // Navigate to the cart page
+        WebElement cartLink = driver.findElement(By.xpath("//a[@href='/cart']"));
+        cartLink.click();
+
+        // Locate the product(s) in the cart that you want to remove
+        WebElement product1 = driver.findElement(By.xpath("//td[@class='product-name']/a[contains(text(), 'Product 1')]"));
+        WebElement product2 = driver.findElement(By.xpath("//td[@class='product-name']/a[contains(text(), 'Product 2')]"));
+
+        // Remove the product(s) from the cart
+        WebElement removeButton1 = product1.findElement(By.xpath("./../following-sibling::td[@class='product-remove']/a"));
+        WebElement removeButton2 = product2.findElement(By.xpath("./../following-sibling::td[@class='product-remove']/a"));
+
+        removeButton1.click();
+        removeButton2.click();
+
+        // Verify that the product(s) have been successfully removed from the cart
+        WebElement emptyCartMessage = driver.findElement(By.xpath("//p[@class='cart-empty']"));
+        String expectedMessage = "Your cart is currently empty.";
+        String actualMessage = emptyCartMessage.getText();
+
+        if (actualMessage.equals(expectedMessage)) {
+            System.out.println("Products have been successfully removed from the cart.");
+        } else {
+            System.out.println("Products have not been successfully removed from the cart.");
+        }
+
+        // Close the browser
+        driver.quit();
+    }
+}
